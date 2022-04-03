@@ -1,3 +1,22 @@
-<p>jap-namescecece works!</p>
+<main>
+  <section class="name-main">
+    <h1>Generate your japanese name right now!</h1>
+    <button mat-raised-button (click)="getFullname()">BANZAI</button>
+    <h1 *ngIf="firstname && lastname" class="jap-name">
+      Konnichiwa
+      <strong>{{ firstname | titlecase }} {{ lastname | titlecase }}</strong>
+    </h1>
+  </section>
 
-<app-comments></app-comments>
+  <section *ngIf="firstname && lastname" class="name-options">
+    <div class="reroll-options">
+      <button mat-raised-button (click)="getFirstname()">
+        Reroll Firstname
+      </button>
+      <button mat-raised-button (click)="getLastname()">
+        Reroll Las tname
+      </button>
+    </div>
+    <app-comments></app-comments>
+  </section>
+</main>

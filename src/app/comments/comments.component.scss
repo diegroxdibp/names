@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  margin: 20px auto 0 auto;
+  padding: 20px;
+
+  section {
+    .comment {
+      padding: 0 10px;
+      .comment-head {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .author {
+        display: flex;
+        align-items: center;
+        p {
+          margin: 0;
+          line-height: 20px;
+        }
+      }
+
+      h2 {
+        margin-bottom: 0;
+      }
+      p {
+        padding: 0 10px;
+      }
+    }
+  }
+  .comment-write {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 36px;
+
+    .author,
+    .text {
+      width: 100%;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
