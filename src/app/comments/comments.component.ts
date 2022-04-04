@@ -16,11 +16,10 @@ export class CommentsComponent implements OnInit {
     private onlineOfflineService: OnlineOfflineService
   ) {
     this.listenConectionStatus();
-  }
-
-  ngOnInit(): void {
     this.getComments();
   }
+
+  ngOnInit(): void {}
 
   getComments() {
     this.commentsService.comments$.subscribe((comments: IComment[]) => {

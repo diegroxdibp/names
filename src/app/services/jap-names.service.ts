@@ -11,9 +11,13 @@ import { ILastname } from '../models/lastname.model';
 export class JapNamesService {
   allFirstnames$: Observable<IFirstname[]>;
   allLastnames$: Observable<ILastname[]>;
+  randomFirstName$: Observable<IFirstname>;
+  randomLastName$: Observable<ILastname>;
   constructor(private http: HttpClient) {
     this.allFirstnames$ = this.getAllFirstnames();
     this.allLastnames$ = this.getAllLastnames();
+    this.randomFirstName$ = this.getRandomFirstname();
+    this.randomLastName$ = this.getRandomLastname();
   }
 
   getRandomFirstname(): Observable<IFirstname> {
