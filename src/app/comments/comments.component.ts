@@ -2,6 +2,7 @@ import { CommentsService } from './../services/comments.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { IComment } from '../models/comment.model';
+import { OnlineOfflineService } from '../services/online-offline.service';
 
 @Component({
   selector: 'app-comments',
@@ -10,7 +11,12 @@ import { IComment } from '../models/comment.model';
 })
 export class CommentsComponent implements OnInit {
   comments: IComment[] = [];
-  constructor(public commentsService: CommentsService) {}
+  constructor(
+    public commentsService: CommentsService,
+    private onlineOfflineService: OnlineOfflineService
+  ) {
+    this.listenConectionStatus();
+  }
 
   ngOnInit(): void {
     this.getComments();
@@ -28,6 +34,20 @@ export class CommentsComponent implements OnInit {
 
   submit(author: string, comment: string): void {
     const payload: IComment = { author, comment };
-    this.commentsService.addComment(payload);
+    if (this.onlineOfflineService.isOnline) {
+      this.commentsService.addComment(payload);
+    } else {
+      console.log(`HOLD!`);
+    }
+  }
+
+  listenConectionStatus() {
+    this.onlineOfflineService.conectionStatus.subscribe((online) => {
+      if (online) {
+        console.log(`ONLINE // Sending cached data`);
+      } else {
+        console.log(`OFFLINE`);
+      }
+    });
   }
 }

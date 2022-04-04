@@ -30,7 +30,7 @@
   {
     "name": "names-api",
     "urls": [
-     "http://localhost:3000/api/names/"
+     "http://localhost:3000/api/names/*"
     ],
     "cacheConfig": {
       "strategy": "freshness",

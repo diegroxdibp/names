@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs/internal/operators/tap';
+import { IFirstname } from '../models/firstname.model';
+import { ILastname } from '../models/lastname.model';
 import { JapNamesService } from '../services/jap-names.service';
 
 @Component({
@@ -13,30 +16,32 @@ export class JapNamesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getFirstname() {
-    this.japNamesService.getRandomFirstname().subscribe((data: any) => {
-      this.firstname = data.firstname;
-      console.log(`Firstname`, data.firstname);
-    });
+  getFirstnamePWA() {
+    this.japNamesService.allFirstnames$
+      .pipe(
+        tap((firstnames: IFirstname[]) => {
+          this.firstname =
+            firstnames[Math.floor(Math.random() * firstnames.length)].firstname;
+        })
+      )
+      .subscribe();
   }
 
-  getLastname() {
-    this.japNamesService.getRandomLastname().subscribe((data: any) => {
-      this.lastname = data.lastname;
-      console.log(`Lastname`, data.lastname);
-    });
+  getLastnamePWA() {
+    this.japNamesService.allLastnames$
+      .pipe(
+        tap((lastnames: ILastname[]) => {
+          this.lastname =
+            lastnames[Math.floor(Math.random() * lastnames.length)].lastname;
+        })
+      )
+      .subscribe();
   }
 
-  getFullname() {
-    this.japNamesService.getRandomFirstname().subscribe((data: any) => {
-      this.firstname = data.firstname;
-      console.log(`Firstname`, data.firstname);
-    });
-    this.japNamesService.getRandomLastname().subscribe((data: any) => {
-      this.lastname = data.lastname;
-      console.log(`Lastname`, data.lastname);
-    });
-    console.log(this.firstname, this.lastname);
+  getFullnamePWA() {
+    this.getFirstnamePWA();
+    this.getLastnamePWA();
+    // console.log(this.firstname, this.lastname);
   }
 
   addFirstname(firstname: string) {
@@ -45,14 +50,5 @@ export class JapNamesComponent implements OnInit {
 
   addLastname(lastname: string) {
     this.japNamesService.addLastname(lastname);
-  }
-
-  submit(firstname: any, lastname: any) {
-    console.log(
-      'First name: ',
-      firstname.value,
-      '-- Last name:',
-      lastname.value
-    );
   }
 }
