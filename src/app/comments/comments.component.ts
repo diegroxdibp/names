@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { IComment } from '../models/comment.model';
 import { OnlineOfflineService } from '../services/online-offline.service';
+import Dexie from 'dexie';
 
 @Component({
   selector: 'app-comments',
@@ -11,12 +12,19 @@ import { OnlineOfflineService } from '../services/online-offline.service';
 })
 export class CommentsComponent implements OnInit {
   comments: IComment[] = [];
+  private db: Dexie;
+  private table: Dexie.Table<IComment, any>;
   constructor(
     public commentsService: CommentsService,
     private onlineOfflineService: OnlineOfflineService
   ) {
     this.listenConectionStatus();
     this.getComments();
+    this.db = new Dexie('db-comments');
+    this.db.version(1).stores({
+      comments: '++comment_id',
+    });
+    this.table = this.db.table('comments');
   }
 
   ngOnInit(): void {}
@@ -27,8 +35,21 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  public trackItem(index: number, item: IComment) {
-    return item.comment_id;
+  async saveToIndexedDB(payload: IComment): Promise<void> {
+    try {
+      await this.table.add(payload);
+      console.log('Comment added to IndexdDB');
+    } catch (error) {
+      console.log('Error while adding to Indexed DB ', error);
+    }
+  }
+
+  async sendFromIndexedDBToAPI() {
+    const indexedComments: IComment[] = await this.table.toArray();
+    indexedComments.forEach(async (comment: IComment, index: number) => {
+      this.commentsService.addComment(comment);
+      await this.table.delete(++index);
+    });
   }
 
   submit(author: string, comment: string): void {
@@ -36,7 +57,7 @@ export class CommentsComponent implements OnInit {
     if (this.onlineOfflineService.isOnline) {
       this.commentsService.addComment(payload);
     } else {
-      console.log(`HOLD!`);
+      this.saveToIndexedDB(payload);
     }
   }
 
@@ -44,9 +65,14 @@ export class CommentsComponent implements OnInit {
     this.onlineOfflineService.conectionStatus.subscribe((online) => {
       if (online) {
         console.log(`ONLINE // Sending cached data`);
+        this.sendFromIndexedDBToAPI();
       } else {
-        console.log(`OFFLINE`);
+        console.log(`OFFLINE - Lost connection`);
       }
     });
+  }
+
+  public trackItem(index: number, item: IComment) {
+    return item.comment_id;
   }
 }

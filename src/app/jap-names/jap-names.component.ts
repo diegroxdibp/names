@@ -44,13 +44,13 @@ export class JapNamesComponent implements OnInit {
     // console.log(this.firstname, this.lastname);
   }
 
-  // getFirstnamePWA() {
+  // getFirstname() {
   //   this.japNamesService.randomFirstName$
   //     .pipe(tap((data) => (this.firstname = data.firstname)))
   //     .subscribe();
   // }
 
-  // getLastnamePWA() {
+  // getLastname() {
   //   this.japNamesService.randomLastName$
   //     .pipe(tap((data) => (this.lastname = data.lastname)))
   //     .subscribe();
