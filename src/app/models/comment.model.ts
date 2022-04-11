@@ -3,4 +3,7 @@ export interface IComment {
   author: string;
   comment: string;
   commented_at?: string;
+  images_url?: string[];
+  imageBase64?: string;
+  files?: any;
 }

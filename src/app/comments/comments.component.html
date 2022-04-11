@@ -1,29 +1,42 @@
 <h1><strong>Comments:</strong></h1>
 <mat-divider></mat-divider>
 
-<section
-  *ngFor="let comment of commentsService.comments$ | async; trackBy: trackItem"
+<div
+  class="comment"
+  *ngFor="
+    let comment of commentsService.comments$ | async;
+    trackBy: trackComment
+  "
 >
-  <div class="comment">
-    <div class="comment-head">
-      <div class="author">
-        <h2>
-          <strong>{{ comment.author }}</strong>
-        </h2>
-        <p>{{ comment.commented_at | date: "medium" }}</p>
-      </div>
-      <h3>ID: {{ comment.comment_id }}</h3>
+  <div class="comment-header">
+    <div class="left-side">
+      <h2>
+        <strong>{{ comment.author }}</strong>
+      </h2>
+      <p>{{ comment.commented_at | date: "medium" }}</p>
     </div>
-    <p>{{ comment.comment }}</p>
+    <div class="right-side">
+      <h3>ID: {{ comment.comment_id }}</h3>
+
+      <button (click)="deleteComment(comment.comment_id!)" mat-raised-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
+  <p>{{ comment.comment }}</p>
+  <div *ngIf="comment.images_url" class="images">
+    <img *ngFor="let url of comment.images_url" [src]="server_endpoint + url" />
+  </div>
+
+  <img *ngIf="comment.imageBase64" [src]="comment.imageBase64" />
   <mat-divider></mat-divider>
-</section>
+</div>
 
 <section class="comment-write">
   <form class="comment-form">
     <mat-form-field class="author">
       <mat-label>Author:</mat-label>
-      <input #author color="primary" matInput />
+      <input #author matInput />
     </mat-form-field>
     <mat-form-field class="text">
       <mat-label>Comment:</mat-label>
@@ -32,14 +45,48 @@
         matInput
         maxlength="300"
         placeholder="Ex. It makes me feel..."
-        color="primary"
       ></textarea>
       <mat-hint align="start"><strong>Write a comment!</strong> </mat-hint>
       <mat-hint align="end">{{ comment.value.length }} / 300</mat-hint>
     </mat-form-field>
   </form>
 
-  <button (click)="submit(author.value, comment.value)" mat-raised-button>
-    SUBMIT
+  <div *ngIf="imagesPreview.length > 0" class="preview">
+    <div
+      *ngFor="let imagePreview of imagesPreview"
+      class="image-preview-wrapper"
+    >
+      <button (click)="removeFile(imagePreview)" mat-raised-button>
+        <mat-icon>close</mat-icon>
+      </button>
+      <img [src]="imagePreview.url | safe: 'url'" alt="Image preview" />
+    </div>
+  </div>
+
+  <button type="button" mat-raised-button (click)="fileInput.click()">
+    Add Image
   </button>
+  <input
+    hidden
+    multiple
+    (change)="onSelectFile($event)"
+    #fileInput
+    type="file"
+    name="comment-image"
+    accept="image/*"
+  />
+
+  <div
+    class="submit-wrapper"
+    [matTooltip]="getTooltipText(comment)"
+    matTooltipPosition="above"
+  >
+    <button
+      (click)="submitComment(author.value, comment.value)"
+      mat-raised-button
+      [disabled]="!comment.value"
+    >
+      SUBMIT
+    </button>
+  </div>
 </section>

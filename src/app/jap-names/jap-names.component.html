@@ -2,17 +2,16 @@
   <section class="name-main">
     <h1>Generate your japanese name right now!</h1>
     <button mat-raised-button (click)="getFullnamePWA()">BANZAI</button>
-    <h1 *ngIf="firstname && lastname" class="jap-name">
+    <h1 *ngIf="(firstname && lastname) || fullname" class="jap-name">
       Konnichiwa
-      <strong>{{ firstname | titlecase }} {{ lastname | titlecase }}</strong>
+      <strong
+        >{{ firstname | titlecase }} {{ lastname | titlecase }} {{ fullname }}
+      </strong>
     </h1>
-    <!-- <div *ngFor="let test of japNamesService.allFirstnames$ | async">
-      <p>{{ test | json }}</p>
-    </div> -->
   </section>
 
-  <section *ngIf="firstname && lastname" class="name-options">
-    <div class="reroll-options">
+  <section *ngIf="(firstname && lastname) || fullname" class="name-options">
+    <div *ngIf="firstname && lastname" class="reroll-options">
       <button mat-raised-button (click)="getFirstnamePWA()">
         Reroll Firstname
       </button>

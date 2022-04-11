@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/internal/operators/tap';
 import { IFirstname } from '../models/firstname.model';
+import { IFullname } from '../models/fullname.model';
 import { ILastname } from '../models/lastname.model';
 import { JapNamesService } from '../services/jap-names.service';
 
@@ -12,6 +13,7 @@ import { JapNamesService } from '../services/jap-names.service';
 export class JapNamesComponent implements OnInit {
   firstname: string = '';
   lastname: string = '';
+  fullname: string = '';
   constructor(public japNamesService: JapNamesService) {}
 
   ngOnInit(): void {}
@@ -39,22 +41,21 @@ export class JapNamesComponent implements OnInit {
   }
 
   getFullnamePWA() {
+    this.japNamesService.allFullnames$
+      .pipe(
+        tap((fullnames: IFullname[]) => {
+          this.fullname =
+            fullnames[Math.floor(Math.random() * fullnames.length)].fullname;
+        })
+      )
+      .subscribe();
+  }
+
+  getFirsnametAndLastnamePWA() {
     this.getFirstnamePWA();
     this.getLastnamePWA();
     // console.log(this.firstname, this.lastname);
   }
-
-  // getFirstname() {
-  //   this.japNamesService.randomFirstName$
-  //     .pipe(tap((data) => (this.firstname = data.firstname)))
-  //     .subscribe();
-  // }
-
-  // getLastname() {
-  //   this.japNamesService.randomLastName$
-  //     .pipe(tap((data) => (this.lastname = data.lastname)))
-  //     .subscribe();
-  // }
 
   addFirstname(firstname: string) {
     this.japNamesService.addFirstname(firstname);

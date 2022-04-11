@@ -15,8 +15,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { SafePipe } from './pipes/safe-html.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
-  declarations: [AppComponent, JapNamesComponent, CommentsComponent],
+  declarations: [AppComponent, JapNamesComponent, CommentsComponent, SafePipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDividerModule,
     NgProgressModule,
     NgProgressHttpModule,
+    MatIconModule,
+    MatTooltipModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
