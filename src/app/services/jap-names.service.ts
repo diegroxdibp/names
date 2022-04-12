@@ -26,20 +26,20 @@ export class JapNamesService {
   }
 
   getRandomFirstname(): Observable<IFirstname> {
-    return this.http.get<IFirstname>(NAMES_API_URL + 'jap/firstname');
+    return this.http.get<IFirstname>(NAMES_API_URL + 'api/names/jap/firstname');
   }
 
   getRandomLastname(): Observable<ILastname> {
-    return this.http.get<ILastname>(NAMES_API_URL + 'jap/lastname');
+    return this.http.get<ILastname>(NAMES_API_URL + 'api/names/jap/lastname');
   }
 
   getRandomFullname(): Observable<IFullname> {
-    return this.http.get<IFullname>(NAMES_API_URL + 'jap/fullname');
+    return this.http.get<IFullname>(NAMES_API_URL + 'api/names/jap/fullname');
   }
 
   addFirstname(firstname: string): void {
     this.http
-      .post(NAMES_API_URL + 'jap/firstname/add', {
+      .post(NAMES_API_URL + 'api/names/jap/firstname/add', {
         firstname,
       })
       .subscribe();
@@ -47,21 +47,21 @@ export class JapNamesService {
 
   addLastname(lastname: string): void {
     this.http
-      .post(NAMES_API_URL + 'jap/firstname/add', {
+      .post(NAMES_API_URL + 'api/names/jap/firstname/add', {
         lastname,
       })
       .subscribe();
   }
 
   getAllFirstnames(): Observable<IFirstname[]> {
-    return this.http.get<IFirstname[]>(NAMES_API_URL + 'jap/firstname/all');
+    return this.http.get<IFirstname[]>(NAMES_API_URL + 'api/names/jap/firstname/all');
   }
 
   getAllLastnames(): Observable<ILastname[]> {
-    return this.http.get<ILastname[]>(NAMES_API_URL + 'jap/lastname/all');
+    return this.http.get<ILastname[]>(NAMES_API_URL + 'api/names/jap/lastname/all');
   }
 
   getAllFullname(): Observable<IFullname[]> {
-    return this.http.get<IFullname[]>(NAMES_API_URL + 'jap/fullname/all');
+    return this.http.get<IFullname[]>(NAMES_API_URL + 'api/names/jap/fullname/all');
   }
 }

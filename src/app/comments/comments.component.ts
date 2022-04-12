@@ -23,7 +23,7 @@ export class CommentsComponent {
   ) {
     this.listenConectionStatus();
     this.getComments();
-    this.server_endpoint = NAMES_API_URL.replace('api/names/', '');
+    this.server_endpoint = NAMES_API_URL;
   }
 
   getComments() {
@@ -42,7 +42,7 @@ export class CommentsComponent {
 
   submitComment(author: string, comment: string): void {
     author = author || 'Anonymous';
-    let payload: IComment = { author, comment, files: this.files };
+    let payload: IComment = { author, comment, files: this.files } as IComment;
     if (this.onlineOfflineService.isOnline) {
       this.commentsService.addComment(payload);
     } else {
