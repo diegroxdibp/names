@@ -30,7 +30,7 @@
   {
     "name": "names-api",
     "urls": [
-     "http://localhost:3000/api/names/*"
+     "https://japnames-api.herokuapp.com/api/names/*"
     ],
     "cacheConfig": {
       "strategy": "freshness",
